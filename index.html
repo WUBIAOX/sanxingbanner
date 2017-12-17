@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			*{margin: 0; padding: 0; list-style: none;}
+			div{height: 600px; position: relative;}
+			ul{width: 500%; height: 600px; position: absolute; top: 0px; }
+			ul li{width: 20%; height: 600px; float: left;}
+			.li1{background: url(img/1.jpg);  background-position: 50% 55%;  }
+			.li2{background: url(img/2.jpg);  background-position: 50% 55%; }
+			.li3{background: url(img/3.jpg);  background-position: 50% 55%; }
+			.li4{background: url(img/4.jpg);  background-position: 50% 55%; }
+		
+			ol{ position: absolute; bottom: 20px;  text-align: center; font-size: 0; height: 15px; width: 100%;}
+			ol .current{background: greenyellow;}
+			ol li { cursor:pointer;width: 15px; height: 15px; border-radius: 50%; background: #fff; margin-right: 10px; display: inline-block;}
+			span{cursor: pointer;}
+			.spanl{ background: url(img/hero-arrow.png) left top; width: 37px; height: 66px; position: absolute; left: 20px; top: 50%; margin-top: -33px;}
+			.spanr{ background: url(img/hero-arrow.png) left bottom; width: 37px; height: 66px; position: absolute; right: 20px; top: 50%; margin-top: -33px;}
+		</style>
+		<script src="js/jquery-1.7.2.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$(function () {
+				
+				var  li =	$('ul li').eq(0).clone();
+				$('ul').append(li);
+				 var windowWidth = $(window).width();
+				$("ol li").click(function  () {
+					$(this).addClass('current').siblings().removeClass('current');
+					var index = $(this).index();
+					$('ul').stop().animate({left:-index*windowWidth}, 500);
+				
+					num = index;
+				});
+				
+				var num = 0;
+				var timer = null;
+				function  autoPlay () {
+					num++;
+					if(num>4){
+					$('ul').css('left',0);
+						num=1;
+					
+					}
+					
+					$('ol li').eq(num).addClass('current').siblings().removeClass('current');
+					$('ul').stop().animate({left:-num*windowWidth},500);
+					if(num==4){
+					$('ol li').eq(0).addClass('current').siblings().removeClass('current');	
+					}
+				}
+				timer=setInterval(autoPlay,2000);
+				
+				$('div').mouseover(function  () {
+					clearInterval(timer);
+				});
+				$('div').mouseout(function  () {
+					clearInterval(timer);
+					timer=setInterval(autoPlay,2000);
+				});
+				
+				$('.spanr').click(function  () {
+					autoPlay();
+				});
+				
+				$('.spanl').click(function  () {
+					num--;
+					if(num<0){
+						$('ul').css('left',-4*windowWidth);
+						num=3;
+					
+					}
+					$('ol li').eq(num).addClass('current').siblings().removeClass('current');
+					
+					$('ul').stop().animate({left:-num*windowWidth},500);
+					if(num==4){
+						$('ol li').eq(0).addClass('current').siblings().removeClass('current');
+					}
+				});
+				
+				$(window).resize(function  () {
+					windowWidth =$(window).width();
+					$('ul li').width(windowWidth);
+					$('ul').stop().animate({left:-num*windowWidth},500);
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div>
+			<ul>
+				<li class="li1"></li>
+				<li class="li2"></li>
+				<li class="li3"></li>
+				<li class="li4"></li>
+				
+			</ul>
+			<ol>
+				<li class="current"></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				
+			</ol>
+			<span class="spanl"></span>
+			<span class="spanr"></span>
+		</div>
+	</body>
+</html>
